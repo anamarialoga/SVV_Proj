@@ -26,6 +26,6 @@ public class ErrorControllerTest {
 
         System.out.println("Opening http://localhost:10000/ ...");
         String errMess = "ERROR";
-        assertEquals("Expected error output: ", " --message: "+ errMess ,errorController.ErrorHeader(p, errMess));
+        assertEquals("Expected error output: ", "Message sent to:"+ p+ " --message: "+ errMess ,errorController.ErrorHeader(p, errMess));
     }
 }
