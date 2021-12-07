@@ -3,7 +3,7 @@ package webserver;
 import webserver.controllers.ErrorController;
 import webserver.controllers.PathController;
 import webserver.utils.ObjectFile;
-
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.net.*;
 import java.io.*;
 
@@ -15,20 +15,24 @@ public class WebServer extends Thread {
 	private PathController pathController = new PathController();
 	private ObjectFile objectFile = new ObjectFile();
 
+	@SuppressFBWarnings("MS_PKGPROTECT") // this static will be modified
 	public static String SERVER_STATUS = "STOP_SERVER";
+
+	@SuppressFBWarnings("DM_EXIT") // The System.exit is fine, we should close the VM
 
 	public WebServer(Socket clientSoc) {
 		clientSocket = clientSoc;
 		if(SERVER_STATUS.equals("EXIT")) System.exit(1);
 		if(SERVER_STATUS.equals("RUN_SERVER")) start();
-		if(SERVER_STATUS.equals("MAINTENANCE_SERVER")) MaintenanceServer();
-		if(SERVER_STATUS.equals("STOP_SERVER")) StopServer();
+		if(SERVER_STATUS.equals("MAINTENANCE_SERVER")) maintenanceServer();
+		if(SERVER_STATUS.equals("STOP_SERVER")) stopServer();
 	}
 
-	public static void StopServer(){
+	public static void stopServer(){
 		System.out.println("Stopping server...");
 	}
 
+	@SuppressFBWarnings({"DM_DEFAULT_ENCODING", "DM_DEFAULT_ENCODING"})
 	public void run() {
 		System.out.println("New Communication Thread Started");
 
@@ -38,18 +42,18 @@ public class WebServer extends Thread {
 			BufferedReader is = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			String path;
 			if ((path = pathController.getPath(is.readLine())) != null) {
-				File file = objectFile.OpenFile(path);
+				File file = objectFile.openFile(path);
 				if (file.exists()) {
 					try {
 						in = new DataInputStream(new FileInputStream(file));
 						objectFile.foundFile(os,  file);
-						objectFile.SendResponse(os, in, (int) file.length());
+						objectFile.sendResponse(os, in, (int) file.length());
 					} catch (Exception e) {
-						errorController.ErrorHeader(os, "Can't Read " + path);
+						errorController.errorHeader(os, "Can't Read " + path);
 					}
 					os.flush();
 				} else
-					errorController.ErrorHeader(os, "Not Found " + path);
+					errorController.errorHeader(os, "Not Found " + path);
 			}
 			clientSocket.close();
 		} catch (IOException e) {
@@ -58,7 +62,8 @@ public class WebServer extends Thread {
 		}
 	}
 
-	public static void InitializeServer() {
+	@SuppressFBWarnings("DM_DEFAULT_ENCODING")
+	public static void initializeServer() {
 
 		System.out.println("Enter SERVER STATUS:\t0: STOP\t1: MAINTENANCE\t2: RUN\t9: EXIT\n");
 		System.out.println("CURRENT SERVER STATUS: " + SERVER_STATUS);
@@ -69,21 +74,22 @@ public class WebServer extends Thread {
         if(myObj.nextLine().equals("9")) SERVER_STATUS = "EXIT";
 		System.out.println("\nNEW CURRENT SERVER STATUS: " + SERVER_STATUS + "\n");
 
-		if(!SERVER_STATUS.equals("EXIT")) InitializeServer();
+		if(!SERVER_STATUS.equals("EXIT")) initializeServer();
 	}
 
 
-	public void MaintenanceServer() {
+	@SuppressFBWarnings("DM_DEFAULT_ENCODING")
+	public void maintenanceServer() {
 		try {
 			DataInputStream in;
 			PrintStream os = new PrintStream(clientSocket.getOutputStream());
-			File file = objectFile.OpenFile("src/main/java/html/maintenance/index.html");
+			File file = objectFile.openFile("src/main/java/html/maintenance/index.html");
 			try {
 				in = new DataInputStream(new FileInputStream(file));
 				objectFile.foundFile(os, file);
-				objectFile.SendResponse(os, in, (int) file.length());
+				objectFile.sendResponse(os, in, (int) file.length());
 			} catch (Exception e) {
-				errorController.ErrorHeader(os, "Can't read Maintenance html file");
+				errorController.errorHeader(os, "Can't read Maintenance html file");
 			}
 			os.flush();
 			clientSocket.close();

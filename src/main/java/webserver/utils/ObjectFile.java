@@ -9,7 +9,7 @@ public class ObjectFile {
 
     public static String foundFile(PrintStream os, File file)
     {
-        String contentType = CheckFile(file.toString());
+        String contentType = checkFile(file.toString());
         os.print("HTTP OK\n");
         os.print("Content-type:" +  contentType + "\n");
 
@@ -17,7 +17,7 @@ public class ObjectFile {
         return "Message sent to:" + os + "  --file: " + file + " --fileType: " + contentType;
     }
 
-    public static File OpenFile(String filename)
+    public static File openFile(String filename)
     {
         File file = new File(filename);
         if (file.exists()) return file;
@@ -25,12 +25,11 @@ public class ObjectFile {
         return new File(filename.substring(1));
     }
 
-    public static String SendResponse(PrintStream p, DataInputStream in, int arr)
+    public static String sendResponse(PrintStream p, DataInputStream in, int arr)
     {
         try
         {
             byte[] buffer = new byte[arr];
-            in.read(buffer);
             p.write(buffer, 0, arr);
             in.close();
         }
@@ -42,7 +41,7 @@ public class ObjectFile {
         return " " + p;
     }
 
-    private static String CheckFile(String fileExtension) {
+    private static String checkFile(String fileExtension) {
         if(fileExtension.contains(".css"))
             return "css";
         if(fileExtension.contains(".html"))

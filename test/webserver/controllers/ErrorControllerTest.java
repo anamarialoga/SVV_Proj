@@ -1,5 +1,6 @@
 package webserver.controllers;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,14 +19,13 @@ public class ErrorControllerTest {
 
     private ErrorController errorController;
 
+    @SuppressFBWarnings("DM_DEFAULT_ENCODING")
     @Test
-    public void ErrorHeader() throws IOException {
+    public void errorHeader() throws IOException {
         ServerSocket serverSocket = new ServerSocket(10000);
         Socket clientSocket = serverSocket.accept();
         PrintStream p = new PrintStream(clientSocket.getOutputStream());
-
-        System.out.println("Opening http://localhost:10000/ ...");
         String errMess = "ERROR";
-        assertEquals("Expected error output: ", " --message: "+ errMess ,errorController.ErrorHeader(p, errMess));
+        assertEquals("Expected error output: ", "Message sent to:" + p + " --message: "+ errMess ,errorController.errorHeader(p, errMess));
     }
 }

@@ -1,5 +1,6 @@
 package webserver.utils;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,17 +20,17 @@ public class ObjectFileTest {
     @Before
     public void setServer() {
         obj = new ObjectFile();
-        fileLength = 30;
+        fileLength = 50;
     }
 
 
+    @SuppressFBWarnings("DM_DEFAULT_ENCODING")
     @Test
     //passes if file exists
     public void fileExists() throws IOException {
         ServerSocket serverSocket = new ServerSocket(10004);
         Socket clientSocket = serverSocket.accept();
         PrintStream p = new PrintStream(clientSocket.getOutputStream());
-        System.out.println("Opening http://localhost:10004/ ...");
 
         File file = new File("src\\main\\java\\html\\TestServer\\PathToMoreLinks\\relLink.html");
         String expectedOutput = "Message sent to:" + p + "  --file: " + file + " --fileType: " + "html";
@@ -43,25 +44,25 @@ public class ObjectFileTest {
     @Test
     //passes if the file doesn't exist
     public void fileOpen() {
-        assertEquals("Expected new file",obj.OpenFile("notExist"), new File("notExist"));
-        assertEquals("Expected new file",obj.OpenFile("notExist"), new File("notExist"));
+        assertEquals("Expected new file",obj.openFile("notExist"), new File("notExist"));
+        assertEquals("Expected new file",obj.openFile("notExist"), new File("notExist"));
     }
 
+    @SuppressFBWarnings("DM_DEFAULT_ENCODING")
     @Test
     //passes when receiving response
     public void response() throws IOException {
         ServerSocket serverSocket = new ServerSocket(10005);
         Socket clientSocket = serverSocket.accept();
         PrintStream p = new PrintStream(clientSocket.getOutputStream());
-        System.out.println("OPEN BROWSER: http://localhost:10005/");
 
         File file = new File("..\\svv-project\\src\\main\\java\\html\\index\\index.html");
         String expectedOutput = "Message sent to:" + p + "  --file: " + file + " --fileType: " + "html";
         assertEquals("Expected output: ", expectedOutput, obj.foundFile(p,  file));
 
         DataInputStream in = new DataInputStream(new FileInputStream(new File("src/main/java/html/index/index.html")));
-        assertEquals("Expected output to succeed ", " "+ p, obj.SendResponse(p, in, (int) new File("..\\svv-project\\src\\main\\java\\html\\index\\index.html").length()));
+        assertEquals("Expected output to succeed ", " "+ p, obj.sendResponse(p, in, (int) new File("..\\svv-project\\src\\main\\java\\html\\index\\index.html").length()));
 
-        assertEquals("Expected output to fail ", "Error when sending response to " + p, obj.SendResponse(p, in, -1));
+        assertEquals("Expected output to fail ", "Error when sending response to " + p, obj.sendResponse(p, in, -1));
     }
 }
