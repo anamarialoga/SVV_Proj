@@ -48,10 +48,10 @@ public class WebServerTest {
 
         String errMessage = "ERROR";
         PrintStream p = new PrintStream(clientSocket.getOutputStream());
-        assertEquals("Expected error output: ", "Message sent to:" + p + " --message: " + errMessage ,errorControllerMock.errorHeader(p, errMessage));
+        assertEquals("Expected error output: ", "Message sent to:" + p + " --ErrorMessage: " + errMessage ,errorControllerMock.errorHeader(p, errMessage));
 
-        String expectedOutput = "Message sent to:" + p + "  --file: " + file + " --fileType: " + "html";
-        assertEquals("Expected output to succeed when checking the file", expectedOutput, objectFileMock.foundFile(p, file));
+        String expectedOutput = "Message sent to:" + p + "  --file: " + file + "  --fileType: " + "html" + "  --fileLength: " + file.length();
+        assertEquals("Expected output to succeed when checking the file", expectedOutput, objectFileMock.foundFile(p, (int) file.length(), file));
 
         webServer.maintenanceServer();
     }
@@ -71,10 +71,10 @@ public class WebServerTest {
 
         String errMessage = "ERROR";
         PrintStream p = new PrintStream(clientSocket.getOutputStream());
-        assertEquals("Expected error output: ", "Message sent to:" + p + " --message: " + errMessage ,errorControllerMock.errorHeader(p, errMessage));
+        assertEquals("Expected error output: ", "Message sent to:" + p + " --ErrorMessage: " + errMessage ,errorControllerMock.errorHeader(p, errMessage));
 
-        String expectedOutput = "Message sent to:" + p + "  --file: " + file + " --fileType: " + "html";
-        assertEquals("Expected output to succeed when checking the file", expectedOutput, objectFileMock.foundFile(p, file));
+        String expectedOutput = "Message sent to:" + p + "  --file: " + file + "  --fileType: " + "html" + "  --fileLength: " + file.length();
+        assertEquals("Expected output to succeed when checking the file", expectedOutput, objectFileMock.foundFile(p,(int) file.length(), file));
 
         webServer.run();
     }

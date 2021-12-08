@@ -11,6 +11,6 @@ public class ErrorController {
         os.print("\n");
         os.print(errMessage+"\n");
 
-        return "Message sent to:" + os + " --message: " + errMessage;
+        return "Message sent to:" + os + " --ErrorMessage: " + errMessage;
     }
 }

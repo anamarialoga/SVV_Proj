@@ -26,6 +26,6 @@ public class ErrorControllerTest {
         Socket clientSocket = serverSocket.accept();
         PrintStream p = new PrintStream(clientSocket.getOutputStream());
         String errMess = "ERROR";
-        assertEquals("Expected error output: ", "Message sent to:" + p + " --message: "+ errMess ,errorController.errorHeader(p, errMess));
+        assertEquals("Expected error output: ", "Message sent to:" + p + " --ErrorMessage: "+ errMess ,errorController.errorHeader(p, errMess));
     }
 }

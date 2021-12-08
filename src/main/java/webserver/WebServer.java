@@ -15,10 +15,8 @@ public class WebServer extends Thread {
 	private PathController pathController = new PathController();
 	private ObjectFile objectFile = new ObjectFile();
 
-	@SuppressFBWarnings("MS_PKGPROTECT") // this static will be modified
+	@SuppressFBWarnings("MS_PKGPROTECT")
 	public static String SERVER_STATUS = "STOP_SERVER";
-
-	@SuppressFBWarnings("DM_EXIT") // The System.exit is fine, we should close the VM
 
 	public WebServer(Socket clientSoc) {
 		clientSocket = clientSoc;
@@ -32,7 +30,7 @@ public class WebServer extends Thread {
 		System.out.println("Stopping server...");
 	}
 
-	@SuppressFBWarnings({"DM_DEFAULT_ENCODING", "DM_DEFAULT_ENCODING"})
+	@SuppressFBWarnings({"DM_DEFAULT_ENCODING", "DM_EXIT"})
 	public void run() {
 		System.out.println("New Communication Thread Started");
 
@@ -46,7 +44,7 @@ public class WebServer extends Thread {
 				if (file.exists()) {
 					try {
 						in = new DataInputStream(new FileInputStream(file));
-						objectFile.foundFile(os,  file);
+						objectFile.foundFile(os,  (int) file.length(), file);
 						objectFile.sendResponse(os, in, (int) file.length());
 					} catch (Exception e) {
 						errorController.errorHeader(os, "Can't Read " + path);
@@ -86,7 +84,7 @@ public class WebServer extends Thread {
 			File file = objectFile.openFile("src/main/java/html/maintenance/index.html");
 			try {
 				in = new DataInputStream(new FileInputStream(file));
-				objectFile.foundFile(os, file);
+				objectFile.foundFile(os, (int) file.length(),  file);
 				objectFile.sendResponse(os, in, (int) file.length());
 			} catch (Exception e) {
 				errorController.errorHeader(os, "Can't read Maintenance html file");

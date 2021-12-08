@@ -33,12 +33,12 @@ public class ObjectFileTest {
         PrintStream p = new PrintStream(clientSocket.getOutputStream());
 
         File file = new File("src\\main\\java\\html\\TestServer\\PathToMoreLinks\\relLink.html");
-        String expectedOutput = "Message sent to:" + p + "  --file: " + file + " --fileType: " + "html";
-        assertEquals("Expected output to succeed when checking the file", expectedOutput, obj.foundFile(p,  file));
+        String expectedOutput = "Message sent to:" + p + "  --file: " + file + "  --fileType: " + "html" + "  --fileLength: " + file.length();
+        assertEquals("Expected output to succeed when checking the file", expectedOutput, obj.foundFile(p,  (int) file.length(), file));
 
         File file2 = new File("src\\main\\java\\html\\TestServer\\PathToMoreLinks\\MoreLinks\\absLink.html");
-        String expectedOutput2 = "Message sent to:" + p + "  --file: " + file2 + " --fileType: " + "html";
-        assertEquals("Expected output to succeed when checking the file", expectedOutput2, obj.foundFile(p, file2));
+        String expectedOutput2 = "Message sent to:" + p + "  --file: " + file2 + "  --fileType: " + "html" + "  --fileLength: " + file.length();
+        assertEquals("Expected output to succeed when checking the file", expectedOutput2, obj.foundFile(p, (int) file.length(), file2));
     }
 
     @Test
@@ -57,8 +57,8 @@ public class ObjectFileTest {
         PrintStream p = new PrintStream(clientSocket.getOutputStream());
 
         File file = new File("..\\svv-project\\src\\main\\java\\html\\index\\index.html");
-        String expectedOutput = "Message sent to:" + p + "  --file: " + file + " --fileType: " + "html";
-        assertEquals("Expected output: ", expectedOutput, obj.foundFile(p,  file));
+        String expectedOutput = "Message sent to:" + p + "  --file: " + file + "  --fileType: " + "html" + "  --fileLength: " + file.length();
+        assertEquals("Expected output: ", expectedOutput, obj.foundFile(p, (int) file.length(),  file));
 
         DataInputStream in = new DataInputStream(new FileInputStream(new File("src/main/java/html/index/index.html")));
         assertEquals("Expected output to succeed ", " "+ p, obj.sendResponse(p, in, (int) new File("..\\svv-project\\src\\main\\java\\html\\index\\index.html").length()));

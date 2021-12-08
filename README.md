@@ -23,7 +23,8 @@ Implementing a web server and some unit tests;;
 
 #COVERAGE
 
-![ScreenShot](screenshots/coverage.PNG)
+![ScreenShot](screenshots/coverage1.PNG)
+![ScreenShot](screenshots/coverage2.PNG)
 
 #SPOTBUGS INCLUDES
 

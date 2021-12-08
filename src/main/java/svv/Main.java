@@ -14,8 +14,8 @@ public class Main {
     public static void main(String[] args) {
 
         WebServer webServer = null;
-        Thread startServer=new Thread() {
-            public void run() {
+        Thread startServer= new Thread(){
+            public void run(){
                 initializeServer();
             }
         };
@@ -34,7 +34,8 @@ public class Main {
             }
         } catch (IOException e) {
             System.err.println("Could not listen on port: 10008.");
-        } finally {
+       }
+        finally {
             try {
                 serverSocket.close();
             } catch (IOException e) {
