@@ -15,6 +15,8 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import static gui.WebServerGUI.SERVER_MAINTENANCE;
+import static gui.WebServerGUI.SERVER_ROOT_WEB;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -31,7 +33,7 @@ public class WebServerTest {
     public void testServer() throws IOException {
         ServerSocket serverSocket = new ServerSocket(10001);
         Socket clientSocket = serverSocket.accept();
-        webServer = new WebServer(clientSocket);
+        webServer = new WebServer(clientSocket,  SERVER_ROOT_WEB, SERVER_MAINTENANCE);
     }
 
     @SuppressFBWarnings("DM_DEFAULT_ENCODING")
@@ -40,7 +42,7 @@ public class WebServerTest {
     public void testMaintenance() throws IOException {
         ServerSocket serverSocket = new ServerSocket(10002);
         Socket clientSocket = serverSocket.accept();
-        webServer = new WebServer(clientSocket);
+        webServer = new WebServer(clientSocket,  SERVER_ROOT_WEB, SERVER_MAINTENANCE);
 
         String path = "..\\svv-project\\src\\main\\java\\html\\maintenance\\index.html";
         File file = new File(path);
@@ -62,7 +64,7 @@ public class WebServerTest {
     public void testRun() throws IOException {
         ServerSocket serverSocket = new ServerSocket(10003);
         Socket clientSocket = serverSocket.accept();
-        webServer = new WebServer(clientSocket);
+        webServer = new WebServer(clientSocket, SERVER_ROOT_WEB, SERVER_MAINTENANCE);
         assertEquals("Expected correct path", "src/main/java/html/index/index.html", pathControllerMock.getPath("GET / HTTP/1.1"));
 
         String path = "src/main/java/html/index/index.html";

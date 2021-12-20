@@ -5,6 +5,8 @@ import webserver.WebServer;
 import java.io.IOException;
 import java.net.ServerSocket;
 
+import static gui.WebServerGUI.SERVER_MAINTENANCE;
+import static gui.WebServerGUI.SERVER_ROOT_WEB;
 import static webserver.WebServer.initializeServer;
 
 public class Main {
@@ -27,7 +29,7 @@ public class Main {
 
                 while (true) {
                     System.out.println("Waiting for Connection");
-                    new WebServer(serverSocket.accept());
+                    new WebServer(serverSocket.accept(), SERVER_ROOT_WEB, SERVER_MAINTENANCE);
                 }
             } catch (IOException e) {
                 System.err.println("Accept failed.");
