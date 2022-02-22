@@ -1,4 +1,4 @@
-#SVV PROJECT
+#Software Verification and Validation Project
 
 Implementing a web server and some unit tests;;
 
